@@ -1,2 +1,4 @@
-include ':commons-model'
-project(':commons-model').projectDir = new File(settingsDir, '../commons-model')
+include ':smi-lib-adapter-chassis'
+project(':smi-lib-adapter-chassis').projectDir = new File(settingsDir, '../smi-lib-adapter-chassis')
+//include ':smi-lib-racadm'
+//project(':smi-lib-racadm').projectDir = new File(settingsDir, '../smi-lib-racadm')
