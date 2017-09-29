@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -26,7 +27,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -43,6 +43,8 @@ public class Application extends WebMvcConfigurerAdapter {
         SpringApplication.run(Application.class, args);
     }
 
+	@Autowired
+	private BuildInfo buildInfo;
 
     @Bean
     public LocaleResolver localeResolver() {
@@ -68,14 +70,8 @@ public class Application extends WebMvcConfigurerAdapter {
 
     @Bean
     public Docket newsApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("chassisInventory").apiInfo(apiInfo()).select().paths(regex("/api.*")).build();
+        return new Docket(DocumentationType.SWAGGER_2).groupName("chassisInventory").apiInfo(new ApiInfoBuilder().title("SMI Micro-service : Chassis Inventory").version(buildInfo.toString()).build()).select().paths(regex("/api.*")).build();
     }
-
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("SMI Micro-service : Chassis Inventory").description("Micro-service for getting chassis inventory data via racadm.").termsOfServiceUrl("http://www.dell.com/smi/chassis/inventory").license("Dell SMI License Version 1.0").licenseUrl("www.dell.com/smi").version("1.0").build();
-    }
-
 
     @Bean
     public EmbeddedServletContainerFactory servletContainerFactory() {
