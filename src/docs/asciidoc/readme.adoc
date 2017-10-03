@@ -1,0 +1,48 @@
+Purpose
+~~~~~~~
+
+Connects to a Dell blade chassis and retrieves inventory information via Dell RACADM. The Dell RACADM (Remote Access Controller Admin) provides interface similar to the iDRAC/DRAC to manage the Chassis. 
+
+How to Use
+~~~~~~~~~~
+
+A docker container for this service is available at: 
+https://hub.docker.com/r/rackhd/dell-chassis-inventory/
+
+
+....
+sudo docker run -p 0.0.0.0:46001:46001 --name dell-chassis-inventory -d rackhd/dell-chassis-inventory:latest
+....
+
+The service can also start up to bootstrap its configuration from consul. More information about registration with and using advanced configuration settings provided by a Consul K/V store can be found in the online help.
+
+Example Post (Without Callback)
++++++++++++++++++++++++++++++++
+
+Syncronous API's
+http://deployedIp:46001/api/1.0/chassis/inventory/details
+....
+{
+  "address": "<<Target CHASSIS IP>>",
+  "password": "calvin",
+  "userName": "root"
+}
+....
+
+Example Post (With Callback)
+++++++++++++++++++++++++++++
+
+Asyncronous API's
+http://deployedIp:46001/api/1.0/chassis/inventory/callback
+....
+http://deployedIp:46001/api/1.0/chassis/inventory/callback
+{
+  "credential": {
+    "address": "<<Target CHASSIS IP>>",
+    "password": "calvin",
+    "userName": "root"
+  },
+  "callbackUri": "http://callbackIp:port/your/callback/path",
+  "type": "details"
+}
+....

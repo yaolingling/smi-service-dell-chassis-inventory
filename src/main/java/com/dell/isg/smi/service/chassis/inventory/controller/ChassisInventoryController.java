@@ -49,9 +49,7 @@ public class ChassisInventoryController {
 
 
     @RequestMapping(value = "/details", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    @ApiOperation(value = "/details", nickname = "details", notes = "This operation allow user to get complete chassis hardware inventory throu Racadm.", response = ChassisDetail.class)
-    // @ApiImplicitParams({
-    // @ApiImplicitParam(name = "credential", value = "Credential", required = true, dataType = Credential.class, paramType = "Body", defaultValue = "no default") })
+    @ApiOperation(value = "/details", nickname = "details", notes = "This operation allows a user to retrieve complete chassis hardware inventory via the Racadm.", response = ChassisDetail.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ChassisDetail.class), @ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
     public ChassisDetail details(@RequestBody Credential credential) {
         ChassisDetail chassis = null;
@@ -77,9 +75,7 @@ public class ChassisInventoryController {
 
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    @ApiOperation(value = "/summary", nickname = "summary", notes = "This operation allow user to get partial chassis information throu Racadm.", response = ChassisSummary.class)
-    // @ApiImplicitParams({
-    // @ApiImplicitParam(name = "credential", value = "Credential", required = true, dataType = "Credential.class", paramType = "Body", defaultValue = "no default") })
+    @ApiOperation(value = "/summary", nickname = "summary", notes = "This operation allows a user to retrieve chassis summary information via the Racadm.", response = ChassisSummary.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ChassisSummary.class), @ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
     public ChassisSummary summary(@RequestBody Credential credential) {
         ChassisSummary summary = null;
@@ -102,11 +98,6 @@ public class ChassisInventoryController {
     }
 
 
-    @RequestMapping(value = "/ips", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    @ApiOperation(value = "/ips", nickname = "ips", notes = "This operation allow user to collect server software identity throu wsman.", response = InventoryInformation.class, responseContainer = "List")
-    // @ApiImplicitParams({
-    // @ApiImplicitParam(name = "deviceIps", value = "DevicesIpsRequest", required = true, dataType = "DevicesIpsRequest.class", paramType = "Body", defaultValue = "no default") })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = InventoryInformation.class), @ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
     public List<InventoryInformation> inventory(@RequestBody DevicesIpsRequest deviceIps) {
         logger.trace("Ips submitted for inventory : ", ReflectionToStringBuilder.toString(deviceIps, new CustomRecursiveToStringStyle(99)));
         List<InventoryInformation> response = null;
@@ -127,12 +118,8 @@ public class ChassisInventoryController {
         return response;
     }
 
-
     @RequestMapping(value = "/callback", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    @ApiOperation(value = "/callback", nickname = "callback", notes = "This operation allow user to collect all the chassis inventory throu wsman. It uses callback uri to respond once the inventory is done.", response = ResponseString.class)
-    // @ApiImplicitParams({
-    // @ApiImplicitParam(name = "inventoryCallbackRequest", value = "InventoryCallbackRequest", required = true, dataType = "InventoryCallbackRequest.class", paramType = "Body",
-    // defaultValue = "no default") })
+    @ApiOperation(value = "/callback", nickname = "callback", notes = "This operation allows a user to retrieve all the chassis inventory via the Racadm. It uses callback uri to respond once the inventory is collected. Type value : summary : details", response = ResponseString.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ResponseString.class), @ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
     public ResponseString inventoryCallback(@RequestBody InventoryCallbackRequest inventoryCallbackRequest) {
         logger.trace("Inventory submitted for callback : {} : {}", inventoryCallbackRequest.getCredential().getAddress(), inventoryCallbackRequest.getCallbackUri());
@@ -149,29 +136,5 @@ public class ChassisInventoryController {
         response.setResponse(result);
         return response;
     }
-
-    // @RequestMapping(value = "/dummyCallback", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    // @ApiOperation(value = "/dummyCallback", nickname = "dummyCallback", notes = "This operation allow user to collect server software identity throu wsman.", response =
-    // ResponseString.class)
-    // public String dummyCallback(@RequestBody InventoryCallbackResponse inventoryCallbackResponse) {
-    // if (inventoryCallbackResponse == null) {
-    // BadRequestException badRequestException = new BadRequestException();
-    // badRequestException.setErrorCode(EnumErrorCode.IOIDENTITY_INVALID_INPUT);
-    // throw badRequestException;
-    // }
-    // logger.debug("Inventory for callback : {} ", ReflectionToStringBuilder.toString(inventoryCallbackResponse, new CustomRecursiveToStringStyle(99)));
-    // return "Request Submitted";
-    // }
-
-    // @RequestMapping(value = "/dummy", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    // public InventoryCallbackResponse dummy(@RequestBody InventoryCallbackRequest inventoryCallbackRequest) {
-    // logger.trace("Inventory submitted for callback : {} : {}", inventoryCallbackRequest.getCredential().getAddress(),inventoryCallbackRequest.getCallbackUri());
-    // if (inventoryCallbackRequest.getCredential() == null || StringUtils.isEmpty(inventoryCallbackRequest.getCredential().getAddress())) {
-    // BadRequestException badRequestException = new BadRequestException();
-    // badRequestException.setErrorCode(EnumErrorCode.IOIDENTITY_INVALID_INPUT);
-    // throw badRequestException;
-    // }
-    // return inventoryManagerImpl.dummy(inventoryCallbackRequest);
-    // }
 
 }
