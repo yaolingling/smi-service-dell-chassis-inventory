@@ -1,6 +1,6 @@
 ### smi-service-dell-chassis-inventory
 
-Retrieves inventory data from a Dell blade chassis
+123Retrieves inventory data from a Dell blade chassis
 
 Copyright © 2017 Dell Inc. or its subsidiaries.  All Rights Reserved. 
 
